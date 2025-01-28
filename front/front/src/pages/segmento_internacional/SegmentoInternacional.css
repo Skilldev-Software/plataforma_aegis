@@ -1,0 +1,166 @@
+
+
+.box 
+{
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  height: calc(100vh - 70px);
+  box-sizing: border-box;
+  background-color: #0f0f0f;
+  color: white;
+  overflow-y: auto;
+}
+
+.form-segmento
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 100px;
+}
+
+
+.step 
+{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+} 
+
+.step h2, p
+{
+  grid-column: span 2;
+}
+
+.step .textarea 
+{
+  grid-column: span 2;
+}
+
+.step .textarea textarea
+{
+  height: 180px;
+  background-color: #252525;
+  color: white;
+}
+
+.step .mb-3 input
+{
+  background-color: #252525;
+  color: white;
+}
+
+.step .mb-3 label, .radio-group span
+{
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.step .mb-3 input::file-selector-button
+{
+  background-color: #FCB900;
+}
+
+.infos-financeiras
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-group
+{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.radio-group span
+{
+  grid-column: span 2;
+}
+
+.radio-inputs
+{
+  display: flex;
+  flex-direction: column;
+  /* grid-template-columns: repeat(2, 1fr); */
+  gap: 10px;
+}
+
+.r_input 
+{
+  display: flex;
+  gap: 10px;
+}
+
+.r_input label 
+{
+  width: 70%;  
+}
+
+.radio-group .r_input .btn-warning
+{
+  background-color: rgb(200, 200, 200);
+  color: black;
+}
+
+select.form-select
+{
+  background-color: #252525;
+  color: white;
+}
+
+option
+{
+  background-color: #252525;
+  color: white;
+}
+
+footer 
+{
+  display: flex;
+  gap: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1b1b1b;
+  padding: 20px;
+  z-index: 1000;
+  justify-content: end;
+}
+
+footer button
+{
+  width: 250px;
+  height: 50px;
+}
+
+@media screen and (max-width: 800px)
+{
+  .step
+  {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .box
+  {
+    padding: 20px 20px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
+
+  .r_input label 
+  {
+    width: 90%;  
+  }
+
+  footer
+  {
+    justify-content: space-between;
+  }
+}

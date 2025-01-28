@@ -1,0 +1,70 @@
+.arquivo {
+    min-width: 220px;
+    padding: 12px;
+    gap: 5%;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 30% 65%;
+    background: linear-gradient(145deg, #333333, #252525);
+    border-radius: 12px;
+    width: 20%;
+    align-items: center;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.arquivo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.icon {
+    margin-inline: auto;
+    height: fit-content;
+    width: fit-content;
+    padding: 15px;
+    background-color: #FCB900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.iconFile {
+    width: 35px;
+    height: 35px;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:visited {
+    color: #ccc;
+}
+
+.tituloArquivo {
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    text-decoration: none;
+}
+
+.tituloArquivo:hover {
+    color: #FCB900;
+}
+
+.tituloArquivo:active {
+    color: #ff9900;
+}

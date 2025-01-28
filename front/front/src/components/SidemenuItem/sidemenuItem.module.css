@@ -1,0 +1,53 @@
+
+.item, .itemAtivo{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    color: #fff;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+
+
+.itemAtivo{
+    text-decoration: none;
+    color: #1a1a1a;
+}
+
+.item span{
+    color: #838489;
+    text-decoration: none;
+}
+
+
+
+.itemAtivo{
+    border-radius: 4px;
+    background-color: #FCB900;
+}
+
+.iconeAtivo{
+    background-color: #FCB900;
+}
+
+.icon{
+    padding: 4px;
+}
+
+.icon, .iconeAtivo{
+    margin: 0px 5px;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.icon img, .iconAtivo img {
+    width: 16px;
+    height: 16px; /* Garantir que a altura também seja fixa */
+}
+
+/*#1A1F37
+#FCB900
+*/

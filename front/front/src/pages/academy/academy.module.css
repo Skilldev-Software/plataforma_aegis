@@ -1,0 +1,59 @@
+.academy{
+    width: 100%;
+    padding-top: 1rem;
+    padding-left: 20px;
+}
+
+.conteudo{
+   
+    display: grid;
+    gap: 1%;
+    grid-template-columns: 32% 32% 32%;
+}
+
+.main{
+    background-color: #0f0f0f;
+    height: 100vh;
+    width: 100%;
+
+    overflow-y: auto;
+}
+
+.modal{
+    top: 0;
+    left: 0;
+    position: fixed;
+    height: 100dvh;
+    width: 100dvw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0f0f0fa1;
+}
+
+
+.modalConteudo{
+    width: 60dvw;
+    height: calc(60dvw * (9/16));
+    background-color: #0f0f0f;
+}
+
+.RepVideo{
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 980px) {
+ .conteudo{
+    grid-template-columns: 45% 45%;
+ }   
+}
+
+@media (max-width: 660px) {
+    .conteudo{
+        grid-template-columns: 90%;
+     }  
+     .conteudo > * {
+        margin: 0 auto;
+    }
+}
