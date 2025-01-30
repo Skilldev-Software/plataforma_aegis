@@ -3,6 +3,7 @@ import './Login.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
 
 function Login() {
   const [textData, setTextData] = useState({});
@@ -34,7 +35,7 @@ function Login() {
     console.log('Infos: ', textData);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', textData);
+      const response = await axios.post(`${API_BASE_URL}/api/login`, textData);
       console.log('Resposta do backend:', response.data);
 
       const token = response.data.token;

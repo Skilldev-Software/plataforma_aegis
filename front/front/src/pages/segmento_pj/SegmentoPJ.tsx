@@ -4,49 +4,102 @@ import { steps } from "./SegmentoPJSteps";
 import { render_step } from "./SegmentoPJFunctions";
 import axios from 'axios';
 import './SegmentoPJ.css';
+import { API_BASE_URL } from '../../config';
 
 function SegmentoPj() {
-    const [infoEmpresa, setInfoEmpresa] = useState({});
-    const [infoGarantia, setGarantia] = useState({});
-    const [infoFaturamento, setFaturamento] = useState({});
-    const [infoDivida, setDivida] = useState({});
+    interface Empresa {
+        nome: string,
+        cnpj: string,	
+        site: string,
+        email: string,
+        contato: string,
+        coments: string,
+        recuperacao_judicial: boolean,
+        balanco_auditado: boolean,
+        tipo_operacao: string,
+        setor_atuacao: string
+    };
+
+    interface Garantia {
+        disponiveis: string,
+        valor: string
+    };
+
+    interface Faturamento {
+        faturamento_2022: string,
+        faturamento_2023: string,
+        faturamento_2024: string
+    };
+
+    interface Divida {
+        valor_total: string;
+        div_tributaria: string;
+        div_bancaria: string;
+        [key: string]: string;
+      }
+
+    const [infoEmpresa, setInfoEmpresa] = useState<Empresa | null>(null);
+    const [infoGarantia, setGarantia] = useState<Garantia | null>(null);
+    const [infoFaturamento, setFaturamento] = useState<Faturamento | null>(null);
+    const [infoDivida, setDivida] = useState<Divida | null>(null);
+
     const [docs, setDocs] = useState<File[]>([]); // Alterado para lidar com arquivos
 
     const handle_info_empresa = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setInfoEmpresa((prevData) => ({ ...prevData, [name]: value }));
+        setInfoEmpresa((prevData) => {  
+            if (prevData) {
+              return { ...prevData, [name]: value };
+            }
+            return prevData;
+          });
     };
 
     const handle_info_garantia = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setGarantia((prevData) => ({ ...prevData, [name]: value }));
+        setGarantia((prevData) => {  
+            if (prevData) {
+              return { ...prevData, [name]: value };
+            }
+            return prevData;
+          });
     };
 
     const handle_info_faturamento = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFaturamento((prevData) => ({ ...prevData, [name]: value }));
+        setFaturamento((prevData) => {  
+            if (prevData) {
+              return { ...prevData, [name]: value };
+            }
+            return prevData;
+          });
     };
 
     const handle_info_divida = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setDivida((prevData) => ({ ...prevData, [name]: value }));
+        setDivida((prevData) => {  
+            if (prevData) {
+              return { ...prevData, [name]: value };
+            }
+            return prevData;
+          });
     };
 
     const handle_docs = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setDocs((prevDocs) => [...prevDocs, ...Array.from(e.target.files)]);
+        const files = e.target.files;
+        if (files) {
+          setDocs((prevDocs) => [...prevDocs, ...Array.from(files)]);
         }
-    };
+      };
 
     const handle_submit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // console.log(docs)
 
         const username = localStorage.getItem('username') || "Desconhecido";
 
         const data = {
             "p_base": {
-                "nome_proposta": infoEmpresa.nome,
+                "nome_proposta": infoEmpresa?.nome,
                 "segmento": "pj",
                 "status": "Nova Proposta"
             },
@@ -57,25 +110,25 @@ function SegmentoPj() {
         };
         for (let key in data.dividas) {
             if (data.dividas.hasOwnProperty(key)) {
-              data.dividas[key] = Number(data.dividas[key]);
+              data.dividas[key] = (data.dividas[key]);
             }
           }
 
-          if (data.empresa.balanco_auditado === "sim") {
+          if (data.empresa?.balanco_auditado === true) {
             data.empresa.balanco_auditado = true;
-          } else if (data.empresa.balanco_auditado === "nao") {
+          } else if (data.empresa?.balanco_auditado === false) {
             data.empresa.balanco_auditado = false;
           }
           
-          if (data.empresa.recuperacao_judicial === "sim") {
+          if (data.empresa?.recuperacao_judicial === true) {
             data.empresa.recuperacao_judicial = true;
-          } else if (data.empresa.recuperacao_judicial === "nao") {
+          } else if (data.empresa?.recuperacao_judicial === false) {
             data.empresa.recuperacao_judicial = false;
           }
         try {
             // Primeiro POST para criar a proposta
             const response = await axios.post(
-                'http://127.0.0.1:8000/teste_proposta/create_list',
+                `${API_BASE_URL}/teste_proposta/create_list`,
                 data,
                 {
                     headers: {
@@ -92,33 +145,33 @@ function SegmentoPj() {
                   TITLE: data.p_base.nome_proposta,
                   STATUS_ID: "NEW",
                   NAME: username,
-                  COMPANY_TITLE: infoEmpresa.nome || "Empresa não informada",
+                  COMPANY_TITLE: infoEmpresa?.nome || "Empresa não informada",
                   COMMENTS:`
                     Originador: ${username}
                     Segmento: OUTRO,
 
-                    Nome da empresa: ${infoEmpresa.nome || "N/A"},
-                    CNPJ da empresa: ${infoEmpresa.cnpj || "N/A"},
-                    Site da empresa: ${infoEmpresa.site || "N/A"},
-                    Email da empresa: ${infoEmpresa.email || "N/A"},
-                    Contato da empresa: ${infoEmpresa.contato || "N/A"},
-                    Fale sobre a empresa e a proposta: ${infoEmpresa.coments || "N/A"},
+                    Nome da empresa: ${infoEmpresa?.nome || "N/A"},
+                    CNPJ da empresa: ${infoEmpresa?.cnpj || "N/A"},
+                    Site da empresa: ${infoEmpresa?.site || "N/A"},
+                    Email da empresa: ${infoEmpresa?.email || "N/A"},
+                    Contato da empresa: ${infoEmpresa?.contato || "N/A"},
+                    Fale sobre a empresa e a proposta: ${infoEmpresa?.coments || "N/A"},
 
-                    A empresa está em recuperação judicial?: ${infoEmpresa.recuperacao_judicial || "N/A"},
-                    A empresa possui balanço auditado?: ${infoEmpresa.balanco_auditado || "N/A"},
-                    Tipo de operação da empresa: ${infoEmpresa.tipo_operacao || "N/A"},
-                    Setor de atuação da empresa: ${infoEmpresa.setor_atuacao || "N/A"},
+                    A empresa está em recuperação judicial?: ${infoEmpresa?.recuperacao_judicial || "N/A"},
+                    A empresa possui balanço auditado?: ${infoEmpresa?.balanco_auditado || "N/A"},
+                    Tipo de operação da empresa: ${infoEmpresa?.tipo_operacao || "N/A"},
+                    Setor de atuação da empresa: ${infoEmpresa?.setor_atuacao || "N/A"},
 
-                    Garantias disponíveis: ${infoGarantia.disponiveis || "N/A"},
-                    Valor das garantias disponíveis: ${infoGarantia.valor || "N/A"},
+                    Garantias disponíveis: ${infoGarantia?.disponiveis || "N/A"},
+                    Valor das garantias disponíveis: ${infoGarantia?.valor || "N/A"},
 
-                    Faturamento 2022: ${infoFaturamento.faturamento_2022 || "N/A"},
-                    Faturamento 2023: ${infoFaturamento.faturamento_2023 || "N/A"},
-                    Faturamento 2024: ${infoFaturamento.faturamento_2024 || "N/A"},
+                    Faturamento 2022: ${infoFaturamento?.faturamento_2022 || "N/A"},
+                    Faturamento 2023: ${infoFaturamento?.faturamento_2023 || "N/A"},
+                    Faturamento 2024: ${infoFaturamento?.faturamento_2024 || "N/A"},
 
-                    Qual o valor total das dívidas: ${infoDivida.valor_total || "N/A"},
-                    Dívida tributária: ${infoDivida.div_tributaria || "N/A"},
-                    Dívida bancária: ${infoDivida.div_bancaria || "N/A"},
+                    Qual o valor total das dívidas: ${infoDivida?.valor_total || "N/A"},
+                    Dívida tributária: ${infoDivida?.div_tributaria || "N/A"},
+                    Dívida bancária: ${infoDivida?.div_bancaria || "N/A"},
                     `,
                 },
               };
@@ -145,7 +198,7 @@ function SegmentoPj() {
                 console.log("formdata: ",   formData)
                 try {
                     const docResponse = await axios.post(
-                        `http://127.0.0.1:8000/teste_proposta/upload_file/${propostaId}`,
+                        `${API_BASE_URL}/teste_proposta/upload_file/${propostaId}`,
                         formData,
                         {
                             headers: {

@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
-import { FaHandshake, FaMoneyBill, FaGlobe, FaPiggyBank, FaBoxes, FaEllipsisH } from 'react-icons/fa';
+import { FaHandshake, FaGlobe, FaPiggyBank, FaEllipsisH } from 'react-icons/fa';
+// import { FaHandshake, FaMoneyBill, FaGlobe, FaPiggyBank, FaBoxes, FaEllipsisH } from 'react-icons/fa';
 
 import './NovaProposta.css'
 

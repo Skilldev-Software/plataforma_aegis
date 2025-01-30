@@ -1,11 +1,18 @@
 import style from "./videoKit.module.css"
 
-export default function VideoKit({ titulo, descricao, url, onOpenModal}) {
+interface VideoProps {
+    titulo: string;
+    // descricao: string;
+    url: string;
+    onOpenModal: () => void;
+}
+
+export default function VideoKit({ titulo, url, onOpenModal }: VideoProps) {
     return (
         <article className={style.video}>
             <iframe 
                 className={style.thumb}
-                src = {url}
+                src={url}
                 title={titulo}>
             </iframe>
             <div className={style.desc}>

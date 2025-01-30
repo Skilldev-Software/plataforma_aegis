@@ -1,18 +1,19 @@
-import styles from './header.module.css'
+import styles from './header.module.css';
 import { useEffect, useState } from 'react';
-import { BsBellFill} from "react-icons/bs";
-import { AiOutlineSetting } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
-import  Perfil  from "../../assets/Profile.png"
-import Logout from "../../assets/logout.png"
-import { useNavigate } from "react-router-dom"; 
-import { Link } from 'react-router'
-// Placeholder caso a imagem não esteja disponível
+import Perfil from "../../assets/Profile.png";
+import Logout from "../../assets/logout.png";
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
 
+// Definindo o tipo da propriedade
+interface HeaderProps {
+  onToggleSidemenu: () => void;  // Função que altera a visibilidade do menu lateral
+}
 
-export default function Header({ onToggleSidemenu }) {
-  const [headerMenu, toggleHeaderMenu] = useState(false);
-  const [userImage, setUserImage] = useState(null);
+export default function Header({ onToggleSidemenu }: HeaderProps) {
+  const [userImage, setUserImage] = useState<string | null>(null);
   const username = localStorage.getItem("username") || "Usuário";
   const navigate = useNavigate();
 
@@ -24,7 +25,7 @@ export default function Header({ onToggleSidemenu }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/profile", {
+        const response = await fetch(`${API_BASE_URL}/api/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

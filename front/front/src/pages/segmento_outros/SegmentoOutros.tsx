@@ -4,20 +4,36 @@ import { steps } from "./SegmentoOutrosSteps";
 import { render_step } from "./SegmentoOutrosFunctions";
 import axios from "axios";
 import "./SegmentoOutros.css";
+import { API_BASE_URL } from "../../config";
 
 function SegmentoOutros() {
-  const [infoCliente, setInfoCliente] = useState<any>({});
+  interface Cliente {
+    nome: string,
+    email: string,
+    contato: string,
+    coments: string,
+    tipo_cliente: string,
+    tipo_operacao: string
+  }
+
+  const [infoCliente, setInfoCliente] = useState<Cliente | null>(null);
   const [docs, setDocs] = useState<File[]>([]);
 
   const handle_info_empresa = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setInfoCliente((prevData) => ({ ...prevData, [name]: value }));
+    setInfoCliente((prevData) => {  
+      if (prevData) {
+        return { ...prevData, [name]: value };
+      }
+      return prevData;
+    });
   };
 
   const handle_docs = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-          setDocs((prevDocs) => [...prevDocs, ...Array.from(e.target.files)]);
-      }
+    const files = e.target.files;
+    if (files) {
+      setDocs((prevDocs) => [...prevDocs, ...Array.from(files)]);
+    }
   };
 
   const handle_submit = async (e: React.FormEvent) => {
@@ -27,7 +43,7 @@ function SegmentoOutros() {
 
     const data = {
       p_base: {
-        nome_proposta: infoCliente.nome,
+        nome_proposta: infoCliente?.nome,
         segmento: "outro",
         status: "Nova Proposta",
       },
@@ -35,10 +51,9 @@ function SegmentoOutros() {
     };
 
     try {
-      console.log(data)
       // Envia a proposta principal e obtém o ID retornado
       const response = await axios.post(
-        "http://127.0.0.1:8000/teste_proposta/create_list", // Substitua pela URL real
+        `${API_BASE_URL}/teste_proposta/create_list`, // Substitua pela URL real
         data,
         {
           headers: {
@@ -56,22 +71,20 @@ function SegmentoOutros() {
           TITLE: data.p_base.nome_proposta,
           NAME: username,
           STATUS_ID: "NEW",
-          OPPORTUNITY: infoCliente.valor_total || 0,
-          CURRENCY_ID: "BRL",
-          COMPANY_TITLE: infoCliente.nome || "Empresa não informada",
+          COMPANY_TITLE: infoCliente?.nome || "Empresa não informada",
           COMMENTS: `
             Originador: ${username}
             Segmento: OUTRO,
 
 
 
-            Nome do cliente: ${infoCliente.nome || "N/A"},
-            Email do cliente: ${infoCliente.email || "N/A"},
-            Contato do cliente (empresário ou financeiro): ${infoCliente.contato || "N/A"},
+            Nome do cliente: ${infoCliente?.nome || "N/A"},
+            Email do cliente: ${infoCliente?.email || "N/A"},
+            Contato do cliente (empresário ou financeiro): ${infoCliente?.contato || "N/A"},
             
-            Proposta do cliente: ${infoCliente.coments || "N/A"},
-            Cliente é Pessoa Física ou Jurídica: ${infoCliente.tipo_cliente === "fisica" ? "Pessoa Física" : "Pessoa Jurídica"},
-            Tipo de operação: ${infoCliente.tipo_operacao || "N/A"},
+            Proposta do cliente: ${infoCliente?.coments || "N/A"},
+            Cliente é Pessoa Física ou Jurídica: ${infoCliente?.tipo_cliente === "fisica" ? "Pessoa Física" : "Pessoa Jurídica"},
+            Tipo de operação: ${infoCliente?.tipo_operacao || "N/A"},
 
           `,
         },
@@ -99,7 +112,7 @@ function SegmentoOutros() {
           console.log("formdata: ",   formData)
           try {
               const docResponse = await axios.post(
-                  `http://127.0.0.1:8000/teste_proposta/upload_file/${propostaId}`,
+                  `${API_BASE_URL}/teste_proposta/upload_file/${propostaId}`,
                   formData,
                   {
                       headers: {

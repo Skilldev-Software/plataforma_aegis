@@ -7,8 +7,21 @@ import Header from "../../components/Header";
 import axios from "axios";
 
 import style from "./dashboard.module.css";
+import { API_BASE_URL } from "../../config";
 
 export default function Dashboard() {
+  interface Proposta {
+    status: string;
+    nome_proposta: string;
+    segmento: string;
+    data_envio: string;
+  }
+  
+  interface Campanha {
+    imagem: string;
+    titulo: string;
+  }
+
   const [isSidemenuVisible, setIsSidemenuVisible] = useState(false);
   const [propostas, setPropostas] = useState([]);
   const [status, setStatus] = useState({ pendencias: 0, emAnalise: 0, aprovados: 0 });
@@ -24,14 +37,14 @@ export default function Dashboard() {
         const token = localStorage.getItem("token");
 
         // Buscando propostas
-        const responsePropostas = await axios.get("http://127.0.0.1:8000/teste_proposta/create_list", {
+        const responsePropostas = await axios.get(`${API_BASE_URL}/teste_proposta/create_list`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const propostasData = responsePropostas.data.deu.reverse();
 
         // Calculando status
         const statusCounts = propostasData.reduce(
-          (acc, proposta) => {
+          (acc: { pendencias: number, emAnalise: number, aprovados: number }, proposta: Proposta) => {
             if (proposta.status === "Pendente") acc.pendencias++;
             if (proposta.status === "Analise") acc.emAnalise++;
             if (proposta.status === "Aprovado") acc.aprovados++;
@@ -41,7 +54,7 @@ export default function Dashboard() {
         );
 
         // Buscando campanhas
-        const responseCampanhas = await axios.get("http://127.0.0.1:8000/campanhas_promocionais", {
+        const responseCampanhas = await axios.get(`${API_BASE_URL}/campanhas_promocionais`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const campanhasData = responseCampanhas.data;
@@ -58,12 +71,12 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  const formatDate = (isoDate) => {
+  const formatDate = (isoDate: string) => {
     const date = new Date(isoDate);
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-
+  
     return `${day}/${month}/${year}`;
   };
 
@@ -124,57 +137,57 @@ export default function Dashboard() {
           <div className={style.dashboardRow7510}>
             <h4>Últimas propostas</h4>
             <section className={style.ultimasPropostas}>
-              {propostas.length > 0 ? (
-                propostas.slice(0, 3).map((proposta, index) => {
-                  let statusClass = "";
-                  switch (proposta.status) {
-                    case "Nova Proposta":
-                      statusClass = style.novaProposta;
-                      break;
-                    case "Em Análise":
-                      statusClass = style.emAnalise;
-                      break;
-                    case "Pendências":
-                      statusClass = style.pendencias;
-                      break;
-                    case "Aprovada":
-                      statusClass = style.aprovada;
-                      break;
-                    default:
-                      statusClass = style.statusDesconhecido;
-                  }
+            {propostas.length > 0 ? (
+              propostas.slice(0, 3).map((proposta: Proposta, index) => {
+                let statusClass = "";
+                switch (proposta.status) {
+                  case "Nova Proposta":
+                    statusClass = style.novaProposta;
+                    break;
+                  case "Em Análise":
+                    statusClass = style.emAnalise;
+                    break;
+                  case "Pendências":
+                    statusClass = style.pendencias;
+                    break;
+                  case "Aprovada":
+                    statusClass = style.aprovada;
+                    break;
+                  default:
+                    statusClass = style.statusDesconhecido;
+                }
 
-                  return (
-                    <article key={index} className={style.proposta}>
-                      <h4>{proposta.nome_proposta}</h4>
-                      <p>Tipo da proposta: {proposta.segmento}</p>
-                      <p>Data de envio: {formatDate(proposta.data_envio)}</p>
-                      <p>
-                        Status: <span className={statusClass}>{proposta.status || "Desconhecido"}</span>
-                      </p>
-                    </article>
-                  );
-                })
-              ) : (
-                <article className={style.semProposta}>
-                  <p>Você não tem propostas enviadas</p>
-                </article>
-              )}
+                return (
+                  <article key={index} className={style.proposta}>
+                    <h4>{proposta.nome_proposta}</h4>
+                    <p>Tipo da proposta: {proposta.segmento}</p>
+                    <p>Data de envio: {formatDate(proposta.data_envio)}</p>
+                    <p>
+                      Status: <span className={statusClass}>{proposta.status || "Desconhecido"}</span>
+                    </p>
+                  </article>
+                );
+              })
+            ) : (
+              <article className={style.semProposta}>
+                <p>Você não tem propostas enviadas</p>
+              </article>
+            )}
             </section>
           </div>
 
           <h4 style={{ marginTop: "20px" }}>Últimas campanhas</h4>
           <div className={style.dashboardRow4040}>
-            {campanhas.length > 0 ? (
-              campanhas.map((campanha, index) => (
-                <div key={index} className={style.cardCampanha}>
-                  <img src={campanha.imagem} alt={campanha.titulo} />
-                  <h5>{campanha.titulo}</h5>
-                </div>
-              ))
-            ) : (
-              <p>Nenhuma campanha disponível</p>
-            )}
+          {campanhas.length > 0 ? (
+            campanhas.map((campanha: Campanha, index) => (
+              <div key={index} className={style.cardCampanha}>
+                <img src={campanha.imagem} alt={campanha.titulo} />
+                <h5>{campanha.titulo}</h5>
+              </div>
+            ))
+          ) : (
+            <p>Nenhuma campanha disponível</p>
+          )}
           </div>
         </main>
       </div>

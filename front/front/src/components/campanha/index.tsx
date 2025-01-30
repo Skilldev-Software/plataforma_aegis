@@ -1,8 +1,12 @@
 import style from "./campanha.module.css"
-import ArquivoIcon from '../../assets/arquivo.svg'
-import { BsFileEarmarkTextFill } from "react-icons/bs";
 
-export default function Campanha({img, regras, titulo}){
+interface CampanhaProps {
+    img: string; 
+    regras: string;
+    titulo: string;
+  }
+
+export default function Campanha({ img, regras, titulo }: CampanhaProps){
     return(
     <article className={style.campanha}>
         <div><img src={img} alt="" className={style.imgCampanha} /></div>

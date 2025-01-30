@@ -1,4 +1,5 @@
 import "./acompanhamento.css";
+import { ReactNode } from 'react';
 import { useState, useEffect, SetStateAction } from "react";
 import { FaChartLine, FaCheckCircle } from "react-icons/fa";
 import { LuAlarmClock, LuFileSearch } from "react-icons/lu";
@@ -6,9 +7,10 @@ import { AiOutlineFileDone } from "react-icons/ai";
 import Header from "../../components/Header";
 import Sidemenu from "../../components/Sidemenu";
 import axios from "axios";
+import { API_BASE_URL } from "../../config";
 
 // URL base da API Django
-const URL_BASE = "http://127.0.0.1:8000/teste_proposta/";
+const URL_BASE = `${API_BASE_URL}/teste_proposta/`;
 
 // Interface para propostas
 interface Proposta {
@@ -74,7 +76,7 @@ const ProposalCard = ({ card, onClick }: { card: Proposta; onClick: any }) => (
   <div className="proposal-card">
     <p className="proposal-id"># {card.id}</p>
     <h3 onClick={() => onClick(card)} className="proposal-name">
-      {card.nome_proposta}
+      {card.nome_empresa}
     </h3>
     <p className="proposal-category">Segmento: {card.segmento}</p>
   </div>
@@ -85,7 +87,7 @@ function Acompanhamento() {
   const [carregando, setCarregando] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [propostaData, setPropostaData] = useState<Proposta | null>(null);
-  const [columnsData, setColumnsData] = useState({
+  const [columnsData, setColumnsData] = useState<{ [key: string]: number }>({
     "Novo negócio": 0,
     "Em análise": 0,
     "Formalização": 0,

@@ -5,23 +5,30 @@ import Header from "../../components/Header"
 import Sidemenu from "../../components/Sidemenu";
 import axios from 'axios';
 import { BsX } from "react-icons/bs";
+import { API_BASE_URL } from "../../config";
 
 
 export default function Academy(){
+    interface Video {
+        id: string;
+        titulo: string;
+        descricao: string;
+        url: string;
+    }
+
     const [isSidemenuVisible, setIsSidemenuVisible] = useState(false);
-    const [videos, setVideos] = useState([]);
+    const [videos, setVideos] = useState<Video[]>([]);
     const toggleSidemenu = () => {
         setIsSidemenuVisible(prevState => !prevState)
         console.log(isSidemenuVisible)
       };
-
-      const [selectedVideo, setSelectedVideo] = useState(null);
+      const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
       const [isModalVisible, setIsModalVisible] = useState(false);
       
-      const handleOpenModal = (video) => {
-          setSelectedVideo(video); // Atualiza o vídeo selecionado
-          setIsModalVisible(true);  // Torna o modal visível
-      };
+      const handleOpenModal = (video: Video) => {
+        setSelectedVideo(video);
+        setIsModalVisible(true);
+    };
       
       const handleCloseModal = () => {
           setIsModalVisible(false); // Fecha o modal
@@ -31,7 +38,7 @@ export default function Academy(){
 useEffect(() => {
     const fetchVideos = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/academy/videos/', {
+            const response = await axios.get(`${API_BASE_URL}/academy/videos/`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -59,7 +66,7 @@ useEffect(() => {
                         <VideoKit
                             key={video.id}
                             titulo={video.titulo}
-                            descricao={video.descricao}
+                            // descricao={video.descricao}
                             url={video.url}
                             onOpenModal={() => handleOpenModal(video)} 
                         />

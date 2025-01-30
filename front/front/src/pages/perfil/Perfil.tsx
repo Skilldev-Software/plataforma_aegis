@@ -2,28 +2,38 @@ import { useState, useEffect } from "react";
 import style from "./perfil.module.css";
 import Header from "../../components/Header";
 import Sidemenu from "../../components/Sidemenu";
-import { BsPencilSquare } from "react-icons/bs";
 import axios from "axios";
+import { API_BASE_URL } from "../../config";
 
 export default function Perfil() {
+  interface UserData {
+    Imagem: string;
+    username?: string;
+    Email?: string;
+    Cpf?: string;
+    "Data de Nascimento"?: string;
+    "Data de Cadastro"?: string;
+  }
+
   const [isSidemenuVisible, setIsSidemenuVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpenFile, setIsOpenFile] = useState(false);
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [userData, setUserData] = useState(null);
-  const [image, setImage] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState(""); // Estado para mensagens de status
 
   const defaultImage = "/front/front/src/assets/fotoPerfil.png";
 
   // Lida com mudanças no input de imagem
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(event.target.files[0]);
+    }
   };
-
   // Upload da imagem do perfil
-  const handleImageUpload = async (event) => {
+  const handleImageUpload = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!image) {
@@ -37,7 +47,7 @@ export default function Perfil() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://127.0.0.1:8000/api/profile_image",
+        `${API_BASE_URL}/api/profile_image`,
         formData,
         {
           headers: {
@@ -48,11 +58,9 @@ export default function Perfil() {
       );
 
       setUploadStatus("Imagem atualizada com sucesso!");
-      console.log(response.data);
-      // Atualiza o userData com a nova imagem
       setUserData((prevData) => ({
-        ...prevData,
-        Imagem: response.data.data.profile_image,
+        ...prevData, // Mantém os dados existentes
+        Imagem: response.data.data.profile_image || prevData?.Imagem, // Usa a imagem do servidor ou mantém a anterior
       }));
     } catch (error) {
       setUploadStatus("Erro ao atualizar a imagem.");
@@ -77,7 +85,7 @@ export default function Perfil() {
   };
 
   // Envia os contatos do usuário
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Telefone:", telefone);
@@ -88,7 +96,7 @@ export default function Perfil() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/profile", {
+        const response = await fetch(`${API_BASE_URL}/api/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

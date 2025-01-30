@@ -11,7 +11,6 @@ import NovaProposta from './pages/nova_proposta/NovaProposta';
 import Academy from './pages/academy/academy';
 import Perfil from './pages/perfil/Perfil';
 import Campanhas from './pages/campanhas/campanhas';
-import Test from './pages/kit-comercial-novo/kit_comercial';
 import SegmentoInternacional from './pages/segmento_internacional/SegmentoInternacional';
 import SegmentoInvestimentos from './pages/segmento_investimentos/SegmentoInvestimentos';
 import SegmentoOutros from './pages/segmento_outros/SegmentoOutros';
@@ -37,7 +36,6 @@ function App() {
           <Route path="/academy" element={<Academy />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/campanha" element={<Campanhas />} />
-          <Route path="/kit-comercial-novo" element={<Test />} />
           <Route path="/nova-proposta/segmentoInternacional" element={<SegmentoInternacional />} />
           <Route path="/nova-proposta/segmentoInvestimentos" element={<SegmentoInvestimentos />} />
           <Route path="/nova-proposta/segmentoOutros" element={<SegmentoOutros />} />

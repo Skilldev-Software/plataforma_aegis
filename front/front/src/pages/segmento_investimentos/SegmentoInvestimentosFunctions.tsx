@@ -17,7 +17,6 @@ export const render_step = (step: any, i: number, handle: any) =>
     {
         if (input.type === 'radio')
         {  
-            const tamanho = input.opcs?.length || 0;
             return (
                 <div className={`radio-group ${input.name}`} key={`${i}-input_${input.name}`}>
                     <span>{input.label}</span>

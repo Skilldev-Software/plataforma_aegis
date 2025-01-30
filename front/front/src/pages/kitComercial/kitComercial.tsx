@@ -5,13 +5,18 @@ import ArquivoKit from "../../components/arquivosKit";
 import axios from 'axios';
 
 import  { useState, useEffect } from 'react';
+import { API_BASE_URL } from "../../config";
 
 export default function kitComercial(){
    
-    
+    interface Documento {
+        id: number;
+        titulo: string;
+        arquivo_pdf: string;
+    }
 
     const [isSidemenuVisible, setIsSidemenuVisible] = useState(false);
-    const [documents, setDocuments] = useState([]);
+    const [documents, setDocuments] = useState<Documento[]>([]);
 
     const toggleSidemenu = () => {
         setIsSidemenuVisible(prevState => !prevState)
@@ -23,7 +28,7 @@ export default function kitComercial(){
             const fetchDocuments = async () => {
                 try {
                     console.log(localStorage.getItem('authToken'))
-                    const response = await axios.get('http://127.0.0.1:8000/kit_comercial/documento/', {
+                    const response = await axios.get(`${API_BASE_URL}/kit_comercial/documento/`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('token')}`,
                         },
@@ -55,14 +60,11 @@ export default function kitComercial(){
                                 key={doc.id}
                                 arquivo={doc.titulo}
                                 link={doc.arquivo_pdf}
-                                nomeArquivo={doc.titulo}
                             />
                         ))}
                     </section>
-
                 </main>
             </div>
-            
         </div>
     );
 }
