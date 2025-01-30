@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-q-$+v)hpc9%k6^b6$^#s*c$q*s!)mgx5bfc2old^7on6(#jrx('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -212,7 +212,7 @@ JAZZMIN_SETTINGS = {
 }
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 ORS_ALLOWED_ORIGINS = [
     "http://localhost:5173/",  # A URL do seu frontend (ou outras URLs permitidas)
 ]
