@@ -214,7 +214,7 @@ JAZZMIN_SETTINGS = {
 
 CORS_ALLOW_ALL_ORIGINS = False
 ORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173/",  # A URL do seu frontend (ou outras URLs permitidas)
+    "http://aegishub.site/",  # A URL do seu frontend (ou outras URLs permitidas)
 ]
 
 
